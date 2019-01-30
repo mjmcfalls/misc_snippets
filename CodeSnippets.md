@@ -1,3 +1,4 @@
+```python
     policy = np.ones([env.nS, env.nA]) / env.nA
     while True:
         V = policy_evaluation(env, policy, gamma, theta)
@@ -26,8 +27,9 @@ def truncated_policy_evaluation(env, policy, V, max_it=1, gamma=1):
             V[s] = v
         num_it += 1
     return V
-
+```
 # Truncated Policy Iteration
+```python
 def truncated_policy_iteration(env, max_it=1, gamma=1, theta=1e-8):
     V = np.zeros(env.nS)
     policy = np.zeros([env.nS, env.nA]) / env.nA
@@ -38,8 +40,9 @@ def truncated_policy_iteration(env, max_it=1, gamma=1, theta=1e-8):
         if max(abs(V-old_V)) < theta:
             break;
     return policy, V
-
+```
 # first-vist Monte carlo method
+```python
 def mc_prediction_v(env, num_episodes, generate_episode, gamma=1.0):
     # initialize empty dictionary of lists
     returns = defaultdict(list)
@@ -86,9 +89,10 @@ def mc_prediction_q(env, num_episodes, generate_episode, gamma=1.0):
             N[state][actions[i]] += 1.0
             Q[state][actions[i]] = returns_sum[state][actions[i]] / N[state][actions[i]]
     return Q
-
+```
 
 # Monte Carlo Control: GLIE
+```python
 def generate_episode_from_Q(env, Q, epsilon, nA):
     """ generates an episode from following the epsilon-greedy policy """
     episode = []
@@ -142,8 +146,9 @@ def mc_control_GLIE(env, num_episodes, gamma=1.0):
     # determine the policy corresponding to the final action-value function estimate
     policy = dict((k,np.argmax(v)) for k, v in Q.items())
     return policy, Q
-
+```
 # Constant alpha MC Control
+```python
 def update_Q_alpha(env, episode, Q, alpha, gamma):
     """ updates the action-value function estimate using the most recent episode """
     states, actions, rewards = zip(*episode)
@@ -173,8 +178,9 @@ def mc_control_alpha(env, num_episodes, alpha, gamma=1.0):
     # determine the policy corresponding to the final action-value function estimate
     policy = dict((k,np.argmax(v)) for k, v in Q.items())
     return policy, Q
-
+```
 # Running mean examples
+```python
 def running_mean(x):
     mu = 0
     mean_values = []
@@ -190,8 +196,9 @@ def forgetful_mean(x, alpha):
         mu = mu + alpha*(x[k] - mu)
         mean_values.append(mu)
     return mean_values
-
+```
 # TD Predictions
+```python
 def td_prediction(env, num_episodes, policy, alpha, gamma=1.0):
     # initialize empty dictionaries of floats
     V = defaultdict(float)
@@ -216,8 +223,9 @@ def td_prediction(env, num_episodes, policy, alpha, gamma=1.0):
             if done:
                 break   
     return V
-
+```
 # TD Control: Sarsa
+```python
 def update_Q(Qsa, Qsa_next, reward, alpha, gamma):
     """ updates the action-value function estimate using the most recent time step """
     return Qsa + (alpha * (reward + (gamma * Qsa_next) - Qsa))
@@ -289,8 +297,9 @@ def sarsa(env, num_episodes, alpha, gamma=1.0):
     # print best 100-episode performance
     print(('Best Average Reward over %d Episodes: ' % plot_every), np.max(scores))
     return Q
-
+```
 # TD Control: Q-learning
+```python
 def q_learning(env, num_episodes, alpha, gamma=1.0):
     # initialize action-value function (empty dictionary of arrays)
     Q = defaultdict(lambda: np.zeros(env.nA))
@@ -337,8 +346,9 @@ def q_learning(env, num_episodes, alpha, gamma=1.0):
     # print best 100-episode performance
     print(('Best Average Reward over %d Episodes: ' % plot_every), np.max(scores))
     return Q
-
+```
 # TD Control: Expected Sarsa
+```python
 def expected_sarsa(env, num_episodes, alpha, gamma=1.0):
     # initialize action-value function (empty dictionary of arrays)
     Q = defaultdict(lambda: np.zeros(env.nA))
@@ -387,8 +397,9 @@ def expected_sarsa(env, num_episodes, alpha, gamma=1.0):
     # print best 100-episode performance
     print(('Best Average Reward over %d Episodes: ' % plot_every), np.max(scores))
     return Q
-
+```
 # Value Iteration
+```python
 def value_iteration(env, gamma=1, theta=1e-8):
     V = np.zeros(env.nS)
     while True:
@@ -401,3 +412,4 @@ def value_iteration(env, gamma=1, theta=1e-8):
             break
     policy = policy_improvement(env, V, gamma)
     return policy, V
+```
